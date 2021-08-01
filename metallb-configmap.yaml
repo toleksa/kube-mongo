@@ -10,3 +10,10 @@ data:
       protocol: layer2
       addresses:
       - 192.168.0.240-192.168.0.250
+      avoid-buggy-ips: true
+    - name: reserved
+      protocol: layer2
+      addresses:
+      - 192.168.0.238-192.168.0.239
+      avoid-buggy-ips: true
+      auto-assign: false
