@@ -5,11 +5,10 @@ metadata:
   namespace: longhorn-system
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: longhorn.kube.ac
-  - http:
+    http:
       paths:
       - path: /
         pathType: Prefix
