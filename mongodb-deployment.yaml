@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: mongodb-deployment
+  name: mongodb-statefulset
   labels:
     app: mongodb
 spec:
@@ -9,23 +9,21 @@ spec:
   selector:
     matchLabels:
       app: mongodb
+  serviceName: mongodb
   template:
     metadata:
       labels:
         app: mongodb
     spec:
-      volumes:
-        - name: mongodb-db-volume
-          persistentVolumeClaim:
-            claimName: mongodb-pvc
       containers:
       - name: mongodb
         image: mongo
         ports:
         - containerPort: 27017
+          name: mongodb
         volumeMounts:
           - mountPath: "/data/db"
-            name: mongodb-db-volume
+            name: db
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
@@ -37,6 +35,16 @@ spec:
             secretKeyRef:
               name: mongodb-secret
               key: mongodb-root-password
+  volumeClaimTemplates:
+  - metadata:
+      name: db
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: longhorn
+      resources:
+        requests:
+          storage: 500Mi
+
 ---
 apiVersion: v1
 kind: Service
