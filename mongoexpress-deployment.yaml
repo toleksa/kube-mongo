@@ -48,5 +48,4 @@ spec:
     - protocol: TCP
       port: 8888
       targetPort: 8081
-      nodePort: 30000
 
